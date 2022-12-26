@@ -2,31 +2,29 @@
 @using ZENBitPackToolbox.Models
 @inject IDialogService DialogService
 
-<MudCard>
-    <MudSimpleTable Dense="true">
-        <thead>
-            <tr>
-                <th>SPVAR</th>
-                <th>Expected Value</th>
-                <th>Current Value</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var spvar in _list.OrderBy(d => d.Key))
-            {
-                <tr>
-                    <td>@spvar.Name</td>
-                    <td>@spvar.ExpectedValue</td>
-                    <td>@spvar.CurrentValue</td>
-                    <td>
-                        <MudIconButton Color="Color.Warning" Variant="Variant.Filled" Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => OpenEditDialogAsync(spvar)" />
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </MudSimpleTable>
-</MudCard>
+<MudSimpleTable Dense="true">
+    <thead>
+    <tr>
+        <th>SPVAR</th>
+        <th>Expected Value</th>
+        <th>Current Value</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var spvar in _list.OrderBy(d => d.Key))
+    {
+        <tr>
+            <td>@spvar.Name</td>
+            <td>@spvar.ExpectedValue</td>
+            <td>@spvar.CurrentValue</td>
+            <td>
+                <MudIconButton Color="Color.Warning" Variant="Variant.Filled" Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => OpenEditDialogAsync(spvar)" />
+            </td>
+        </tr>
+    }
+    </tbody>
+</MudSimpleTable>
 
 
 @code {

@@ -2,62 +2,60 @@
 @using ZENBitPackToolbox.Models
 @inject IDialogService DialogService
 
-<MudCard>
-    <MudSimpleTable Dense="true">
-        <thead>
-            <tr>
-                <th>Variable</th>
-                <th>Min value</th>
-                <th>Max value</th>
-                <th>Current value</th>
-                <th>Size</th>
-                <th>SPVARs used</th>
-                <th>Bits used</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var variable in _list.OrderBy(d => d.Index))
-            {
-                <tr>
-                    <td>@variable.Name</td>
-                    <td>@variable.Min</td>
-                    <td>@variable.Max</td>
-                    <td>@variable.CurrentValue</td>
-                    <td>@variable.TotalBits</td>
-                    <td>
-                        @if (variable.StartSpvar != variable.EndSpvar)
-                        {
-                            <MudText>@variable.StartSpvar & @variable.EndSpvar</MudText>
-                        }
-                        else
-                        {
-                            <MudText>@variable.StartSpvar</MudText>
-                        }
-                    </td>
-                    <td>
-                        @if (variable.StartSpvar != variable.EndSpvar)
-                        {
-                            <MudText>@variable.StartSpvar: @variable.StartBit - 31<br/>
-                                     @variable.EndSpvar: 0 - @variable.EndBit</MudText>
-                        }
-                        else
-                        {
-                            <MudText>@variable.StartBit - @variable.EndBit</MudText>
-                        }
-                    </td>
-                    <td>
-                        <MudIconButton Color="Color.Success" Variant="Variant.Filled" Icon="@Icons.Filled.ArrowUpward" Size="Size.Small" OnClick="() => MoveAsync(variable, true)" Disabled="variable.Index == 0" Title="Move variable up" />
-                        <MudIconButton Color="Color.Success" Variant="Variant.Filled" Icon="@Icons.Filled.ArrowDownward" Size="Size.Small" OnClick="() => MoveAsync(variable, false)" Disabled="variable.Index == _indexMax" Title="Move variable down" />
-                        <MudIconButton Color="Color.Info" Variant="Variant.Filled" Icon="@Icons.Filled.Refresh" Size="Size.Small" OnClick="() => ReloadCurrentValueAsync(variable)" Title="Reload from current value" />
-                        <MudIconButton Color="Color.Warning" Variant="Variant.Filled" Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => OpenEditDialogAsync(variable)" Title="Modify the variable" />
-                        <MudIconButton Color="Color.Error" Variant="Variant.Filled" Icon="@Icons.Filled.Remove" Size="Size.Small" OnClick="() => RemoveAsync(variable)" Title="Remove the variable" />
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </MudSimpleTable>
-</MudCard>
+<MudSimpleTable Dense="true">
+    <thead>
+    <tr>
+        <th>Variable</th>
+        <th>Min value</th>
+        <th>Max value</th>
+        <th>Current value</th>
+        <th>Size</th>
+        <th>SPVARs used</th>
+        <th>Bits used</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var variable in _list.OrderBy(d => d.Index))
+    {
+        <tr>
+            <td>@variable.Name</td>
+            <td>@variable.Min</td>
+            <td>@variable.Max</td>
+            <td>@variable.CurrentValue</td>
+            <td>@variable.TotalBits</td>
+            <td>
+                @if (variable.StartSpvar != variable.EndSpvar)
+                {
+                    <MudText>@variable.StartSpvar & @variable.EndSpvar</MudText>
+                }
+                else
+                {
+                    <MudText>@variable.StartSpvar</MudText>
+                }
+            </td>
+            <td>
+                @if (variable.StartSpvar != variable.EndSpvar)
+                {
+                    <MudText>@variable.StartSpvar: @variable.StartBit - 31<br/>
+                        @variable.EndSpvar: 0 - @variable.EndBit</MudText>
+                }
+                else
+                {
+                    <MudText>@variable.StartBit - @variable.EndBit</MudText>
+                }
+            </td>
+            <td>
+                <MudIconButton Color="Color.Success" Variant="Variant.Filled" Icon="@Icons.Filled.ArrowUpward" Size="Size.Small" OnClick="() => MoveAsync(variable, true)" Disabled="variable.Index == 0" Title="Move variable up" />
+                <MudIconButton Color="Color.Success" Variant="Variant.Filled" Icon="@Icons.Filled.ArrowDownward" Size="Size.Small" OnClick="() => MoveAsync(variable, false)" Disabled="variable.Index == _indexMax" Title="Move variable down" />
+                <MudIconButton Color="Color.Info" Variant="Variant.Filled" Icon="@Icons.Filled.Refresh" Size="Size.Small" OnClick="() => ReloadCurrentValueAsync(variable)" Title="Reload from current value" />
+                <MudIconButton Color="Color.Warning" Variant="Variant.Filled" Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => OpenEditDialogAsync(variable)" Title="Modify the variable" />
+                <MudIconButton Color="Color.Error" Variant="Variant.Filled" Icon="@Icons.Filled.Remove" Size="Size.Small" OnClick="() => RemoveAsync(variable)" Title="Remove the variable" />
+            </td>
+        </tr>
+    }
+    </tbody>
+</MudSimpleTable>
 
 @code {
     bool _initialized;
