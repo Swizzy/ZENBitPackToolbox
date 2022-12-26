@@ -2,14 +2,19 @@
 
 public class Spvar
 {
+    public Spvar()
+    {
+
+    }
+
     public Spvar(string name)
     {
         Name = name;
     }
 
-    public string Name { get; }
-    public int CurrentValue { get; private set; }
-    public int ExpectedValue { get; private set; }
+    public string Name { get; set; }
+    public int CurrentValue { get; set; }
+    public int ExpectedValue { get; set; }
 
     public void SetCurrentValue(int value)
     {

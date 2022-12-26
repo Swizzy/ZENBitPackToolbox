@@ -1,0 +1,67 @@
+﻿@using ZENBitPackToolbox.Managers
+<MudDialog>
+    <DialogContent>
+        <MudTextField T="string"
+                      Label="Variable name"
+                      Immediate="true"
+                      Clearable="true"
+                      @bind-Value="Name"/>
+        <MudNumericField T="int"
+                         @bind-Value="@Min"
+                         Label="Minimum value"
+                         Min="Int32.MinValue"
+                         Max="Int32.MaxValue"
+                         Step="1"
+                         Format="N0"
+                         Immediate="true"
+                         Clearable="false" />
+        <MudNumericField T="int"
+                         @bind-Value="@Max"
+                         Label="Maximum value"
+                         Min="Int32.MinValue"
+                         Max="Int32.MaxValue"
+                         Step="1"
+                         Format="N0"
+                         Immediate="true"
+                         Clearable="false" />
+        <MudNumericField T="int"
+                         @bind-Value="@CurrentValue"
+                         Label="Current value"
+                         Min="Int32.MinValue"
+                         Max="Int32.MaxValue"
+                         Step="1"
+                         Format="N0"
+                         Immediate="true"
+                         Clearable="false" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="Submit">Add</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public Func<StateManager> StateManager { get; set; }
+    [Parameter]
+    public string? Name { get; set; }
+    [Parameter]
+    public int Min { get; set; }
+    [Parameter]
+    public int Max { get; set; }
+    [Parameter]
+    public int CurrentValue { get; set; }
+    [Parameter]
+    public int Index { get; set; }
+
+    async Task Submit()
+    {
+        await StateManager().UpdateVariableAsync(Index, Name, Min, Max, CurrentValue);
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    void Cancel() => MudDialog.Cancel();
+}

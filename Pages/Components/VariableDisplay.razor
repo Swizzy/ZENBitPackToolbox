@@ -47,12 +47,11 @@
                         }
                     </td>
                     <td>
-                        <MudButtonGroup>
-                            <MudIconButton Color="Color.Success" Variant="Variant.Filled" Icon="@Icons.Filled.ArrowUpward" Size="Size.Small" OnClick="() => MoveAsync(variable, true)" Disabled="variable.Index == 0" />
-                            <MudIconButton Color="Color.Success" Variant="Variant.Filled" Icon="@Icons.Filled.ArrowDownward" Size="Size.Small" OnClick="() => MoveAsync(variable, false)" Disabled="variable.Index == _indexMax" />
-                            <MudIconButton Color="Color.Warning" Variant="Variant.Filled" Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => OpenEditDialog(variable)"/>
-                            <MudIconButton Color="Color.Error" Variant="Variant.Filled" Icon="@Icons.Filled.Remove" Size="Size.Small" OnClick="() => RemoveAsync(variable)"/>
-                        </MudButtonGroup>
+                        <MudIconButton Color="Color.Success" Variant="Variant.Filled" Icon="@Icons.Filled.ArrowUpward" Size="Size.Small" OnClick="() => MoveAsync(variable, true)" Disabled="variable.Index == 0" Title="Move variable up" />
+                        <MudIconButton Color="Color.Success" Variant="Variant.Filled" Icon="@Icons.Filled.ArrowDownward" Size="Size.Small" OnClick="() => MoveAsync(variable, false)" Disabled="variable.Index == _indexMax" Title="Move variable down" />
+                        <MudIconButton Color="Color.Info" Variant="Variant.Filled" Icon="@Icons.Filled.Refresh" Size="Size.Small" OnClick="() => ReloadCurrentValueAsync(variable)" Title="Reload from current value" />
+                        <MudIconButton Color="Color.Warning" Variant="Variant.Filled" Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => OpenEditDialogAsync(variable)" Title="Modify the variable" />
+                        <MudIconButton Color="Color.Error" Variant="Variant.Filled" Icon="@Icons.Filled.Remove" Size="Size.Small" OnClick="() => RemoveAsync(variable)" Title="Remove the variable" />
                     </td>
                 </tr>
             }
@@ -115,10 +114,22 @@
         public int CurrentValue { get; }
     }
 
-    private void OpenEditDialog(VariableData data)
+    private async Task OpenEditDialogAsync(VariableData data)
     {
-        Console.WriteLine($"You are editing {data.Name}");
-        //TODO: Open edit dialog
+        var parameters = new DialogParameters {
+                                                  { "StateManager", () => StateManager },
+                                                  { "Name", data.Name },
+                                                  { "Min", data.Min },
+                                                  { "Max", data.Max },
+                                                  { "CurrentValue", data.CurrentValue },
+                                                  { "Index", data.Index },
+
+                                              };
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium };
+
+        await (await DialogService.ShowAsync<UpdateVariableDialog>("Update Variable", parameters, options)).Result;
+        StateManagerOnStateChanged(this, EventArgs.Empty);
     }
 
     private async Task RemoveAsync(VariableData variable)
@@ -136,7 +147,6 @@
 
         if (result.Cancelled == false)
         {
-            Console.WriteLine($"Removed variable '{variable.Name}' at index {variable.Index}");
             await StateManager.RemoveVariableAsync(variable.Index);
         }
     }
@@ -144,7 +154,12 @@
     private async Task MoveAsync(VariableData variable, bool up)
     {
         var direction = up ? "up" : "down";
-        Console.WriteLine($"Moved variable '{variable.Name}' at index {variable.Index} {direction}");
         await StateManager.MoveVariableAsync(variable.Index, up);
     }
+
+    private async Task ReloadCurrentValueAsync(VariableData variable)
+    {
+        await StateManager.ReloadVariableCurrentValueAsync(variable.Index);
+    }
+
 }

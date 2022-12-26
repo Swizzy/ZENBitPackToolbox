@@ -1,8 +1,10 @@
 ﻿@page "/"
 @using ZENBitPackToolbox.Pages.Components
 @using ZENBitPackToolbox.Managers
+@inject IDialogService DialogService
 
 <MudButton Color="Color.Error" Variant="Variant.Outlined" OnClick="ResetAsync">Reset</MudButton>
+<MudButton Color="Color.Success" Variant="Variant.Outlined" OnClick="ShowAddVariableDialogAsync">Add new Variable</MudButton>
 <MudTabs Class="mt-1">
     <MudTabPanel Text="Stats">
         <StatsDisplay />
@@ -21,4 +23,14 @@
     StateManager StateManager { get; set; }
 
     private async Task ResetAsync() => await StateManager.ResetAsync();
+    private async Task ShowAddVariableDialogAsync()
+    {
+        var parameters = new DialogParameters {
+                             { "StateManager", () => StateManager }
+                         };
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium };
+
+        await (await DialogService.ShowAsync<AddVariableDialog>("Add Variable", parameters, options)).Result;
+    }
 }
