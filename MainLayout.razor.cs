@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using Blazored.LocalStorage;
 using MudBlazor;
@@ -20,6 +21,21 @@ namespace ZENBitPackToolbox
         private MudThemeProvider? _mudThemeProvider;
         private string ModeIcon => _isDarkMode ? Icons.Outlined.LightMode : Icons.Outlined.DarkMode;
         private string ModeTitle => _isDarkMode ? "Switch to light theme" : "Switch to dark theme";
+        public string AppVersion => GetVersion();
+
+        private string GetVersion()
+        {
+            var assembly = Assembly.GetAssembly(typeof(MainLayout))!;
+            Type? gitver = assembly.GetTypes().FirstOrDefault(t => t.Name.EndsWith("GitVersionInformation", StringComparison.CurrentCultureIgnoreCase));
+
+            if (gitver != null)
+            {
+                return "v" + gitver.GetField("SemVer")!.GetValue(null) + " (" + gitver.GetField("ShortSha")!.GetValue(null) + ")";
+            }
+
+            return "ERROR";
+        }
+
         private bool _isDarkMode;
 
         protected override async Task OnInitializedAsync()

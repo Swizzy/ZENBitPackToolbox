@@ -11,7 +11,10 @@
         <MudIconButton @onclick="ToggleDarkMode" Color="Color.Inherit" Icon="@ModeIcon" Title="@ModeTitle" />
     </MudAppBar>
     <MudMainContent>
-        @*Body*@
+        @Body
     </MudMainContent>
+    <MudAppBar Bottom="true" Dense="true">
+        <MudText>Version: @AppVersion</MudText>
+    </MudAppBar>
 </MudLayout>
 
