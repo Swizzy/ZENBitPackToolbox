@@ -1,13 +1,9 @@
-﻿using ZENBitPackToolbox.Managers;
-
-namespace ZENBitPackToolbox.Models;
+﻿namespace ZENBitPackToolbox.Models;
 
 public class Spvar
 {
-    private readonly StateManager _stateManager;
-    public Spvar(StateManager stateManager, string name)
+    public Spvar(string name)
     {
-        _stateManager = stateManager;
         Name = name;
     }
 
@@ -17,17 +13,9 @@ public class Spvar
 
     public void SetCurrentValue(int value)
     {
-        if (value != CurrentValue)
-        {
-            CurrentValue = value;
-        }
+        Console.WriteLine($"Updating current value for SPVAR, new value: {value}, previous value: {CurrentValue}");
+        CurrentValue = value;
     }
 
-    public void SetExpectedValue(int value)
-    {
-        if (value != ExpectedValue)
-        {
-            ExpectedValue = value;
-        }
-    }
+    public void SetExpectedValue(int value) => ExpectedValue = value;
 }

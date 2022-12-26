@@ -1,0 +1,89 @@
+﻿@using ZENBitPackToolbox.Managers
+@using ZENBitPackToolbox.Models
+@inject IDialogService DialogService
+
+<MudCard>
+    <MudSimpleTable Dense="true">
+        <thead>
+            <tr>
+                <th>SPVAR</th>
+                <th>Expected Value</th>
+                <th>Current Value</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var spvar in _list.OrderBy(d => d.Key))
+            {
+                <tr>
+                    <td>@spvar.Name</td>
+                    <td>@spvar.ExpectedValue</td>
+                    <td>@spvar.CurrentValue</td>
+                    <td>
+                        <MudIconButton Color="Color.Warning" Variant="Variant.Filled" Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => OpenEditDialogAsync(spvar)" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </MudSimpleTable>
+</MudCard>
+
+
+@code {
+    bool _initialized;
+    List<SpvarData> _list = new();
+
+    protected override Task OnParametersSetAsync()
+    {
+        if (_initialized == false)
+        {
+            StateManager.StateChanged += StateManagerOnStateChanged;
+            StateManagerOnStateChanged(null, EventArgs.Empty);
+            _initialized = true;
+        }
+        return base.OnParametersSetAsync();
+    }
+
+    private void StateManagerOnStateChanged(object? sender, EventArgs e)
+    {
+        _list = StateManager.GetSpvars.Select(kvp => new SpvarData(kvp.Key, kvp.Value)).ToList();
+        StateHasChanged();
+    }
+
+
+    [CascadingParameter]
+    StateManager StateManager { get; set; }
+
+    private class SpvarData
+    {
+        public SpvarData(int key, Spvar data)
+        {
+            Key = key;
+            Name = data.Name;
+            ExpectedValue = data.ExpectedValue;
+            CurrentValue = data.CurrentValue;
+        }
+
+        public int Key { get; }
+        public string Name { get; }
+        public int ExpectedValue { get; }
+        public int CurrentValue { get; }
+    }
+
+    private async Task OpenEditDialogAsync(SpvarData data)
+    {
+        var parameters = new DialogParameters
+                         {
+                             { "StateManager", () => StateManager },
+                             { "Name", data.Name },
+                             { "Value", data.CurrentValue },
+                             { "Key", data.Key }
+                         };
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small };
+
+        await (await DialogService.ShowAsync<SetSpvarValueDialog>("", parameters, options)).Result;
+        StateManagerOnStateChanged(null, EventArgs.Empty);
+    }
+
+}

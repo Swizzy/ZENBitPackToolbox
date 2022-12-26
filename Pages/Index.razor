@@ -1,3 +1,24 @@
 ﻿@page "/"
+@using ZENBitPackToolbox.Pages.Components
+@using ZENBitPackToolbox.Managers
 
-<h1>Hello, world!</h1>
+<MudButton Color="Color.Error" Variant="Variant.Outlined" OnClick="ResetAsync">Reset</MudButton>
+<MudTabs Class="mt-1">
+    <MudTabPanel Text="Stats">
+        <StatsDisplay />
+    </MudTabPanel>
+    <MudTabPanel Text="Variables">
+        <VariableDisplay/>
+    </MudTabPanel>
+    <MudTabPanel Text="SPVARs">
+        <SpvarDisplay/>
+    </MudTabPanel>
+</MudTabs>
+
+@code
+{
+    [CascadingParameter]
+    StateManager StateManager { get; set; }
+
+    private async Task ResetAsync() => await StateManager.ResetAsync();
+}

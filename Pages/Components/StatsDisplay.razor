@@ -1,0 +1,42 @@
+﻿@using ZENBitPackToolbox.Managers
+<MudCard>
+    <MudSimpleTable>
+        <tbody>
+            <tr><td>Total bits used</td><td>@TotalBitsUsed</td></tr>
+            <tr><td>Total SPVARs used</td><td>@TotalSpvarsUsed</td></tr>
+        <tr><td>Last SPVAR Used</td><td>@LastSpvarUsed</td></tr>
+        </tbody>
+    </MudSimpleTable>
+</MudCard>
+
+
+@code {
+    bool _initialized;
+
+    protected override Task OnParametersSetAsync()
+    {
+        if (_initialized == false)
+        {
+            StateManager.StateChanged += StateManagerOnStateChanged;
+            StateManagerOnStateChanged(null, EventArgs.Empty);
+            _initialized = true;
+        }
+        return base.OnParametersSetAsync();
+    }
+
+    private void StateManagerOnStateChanged(object? sender, EventArgs e)
+    {
+        TotalBitsUsed = StateManager.TotalBitsUsed;
+        TotalSpvarsUsed = StateManager.TotalSpvarsUsed;
+        LastSpvarUsed = $"SPVAR_{StateManager.LastSpvarUsed}";
+        StateHasChanged();
+    }
+
+
+    [CascadingParameter]
+    StateManager StateManager { get; set; }
+
+    public int TotalBitsUsed;
+    public int TotalSpvarsUsed;
+    public string LastSpvarUsed;
+}

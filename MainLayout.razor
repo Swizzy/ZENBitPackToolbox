@@ -11,7 +11,7 @@
         <MudIconButton @onclick="ToggleDarkMode" Color="Color.Inherit" Icon="@ModeIcon" Title="@ModeTitle" />
     </MudAppBar>
     <MudMainContent>
-        <MudContainer Class="mb-12">
+        <MudContainer Class="mb-12 mt-1">
             <CascadingValue Value="@StateManager" IsFixed="true">
                 @Body
             </CascadingValue>

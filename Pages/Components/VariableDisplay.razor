@@ -1,0 +1,150 @@
+﻿@using ZENBitPackToolbox.Managers
+@using ZENBitPackToolbox.Models
+@inject IDialogService DialogService
+
+<MudCard>
+    <MudSimpleTable Dense="true">
+        <thead>
+            <tr>
+                <th>Variable</th>
+                <th>Min value</th>
+                <th>Max value</th>
+                <th>Current value</th>
+                <th>Size</th>
+                <th>SPVARs used</th>
+                <th>Bits used</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var variable in _list.OrderBy(d => d.Index))
+            {
+                <tr>
+                    <td>@variable.Name</td>
+                    <td>@variable.Min</td>
+                    <td>@variable.Max</td>
+                    <td>@variable.CurrentValue</td>
+                    <td>@variable.TotalBits</td>
+                    <td>
+                        @if (variable.StartSpvar != variable.EndSpvar)
+                        {
+                            <MudText>@variable.StartSpvar & @variable.EndSpvar</MudText>
+                        }
+                        else
+                        {
+                            <MudText>@variable.StartSpvar</MudText>
+                        }
+                    </td>
+                    <td>
+                        @if (variable.StartSpvar != variable.EndSpvar)
+                        {
+                            <MudText>@variable.StartSpvar: @variable.StartBit - 31<br/>
+                                     @variable.EndSpvar: 0 - @variable.EndBit</MudText>
+                        }
+                        else
+                        {
+                            <MudText>@variable.StartBit - @variable.EndBit</MudText>
+                        }
+                    </td>
+                    <td>
+                        <MudButtonGroup>
+                            <MudIconButton Color="Color.Success" Variant="Variant.Filled" Icon="@Icons.Filled.ArrowUpward" Size="Size.Small" OnClick="() => MoveAsync(variable, true)" Disabled="variable.Index == 0" />
+                            <MudIconButton Color="Color.Success" Variant="Variant.Filled" Icon="@Icons.Filled.ArrowDownward" Size="Size.Small" OnClick="() => MoveAsync(variable, false)" Disabled="variable.Index == _indexMax" />
+                            <MudIconButton Color="Color.Warning" Variant="Variant.Filled" Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => OpenEditDialog(variable)"/>
+                            <MudIconButton Color="Color.Error" Variant="Variant.Filled" Icon="@Icons.Filled.Remove" Size="Size.Small" OnClick="() => RemoveAsync(variable)"/>
+                        </MudButtonGroup>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </MudSimpleTable>
+</MudCard>
+
+@code {
+    bool _initialized;
+    int _indexMax = 0;
+    List<VariableData> _list = new();
+
+    protected override Task OnParametersSetAsync()
+    {
+        if (_initialized == false)
+        {
+            StateManager.StateChanged += StateManagerOnStateChanged;
+            StateManagerOnStateChanged(null, EventArgs.Empty);
+            _initialized = true;
+        }
+        return base.OnParametersSetAsync();
+    }
+
+    private void StateManagerOnStateChanged(object? sender, EventArgs e)
+    {
+        _list = StateManager.GetVariables.Select(v => new VariableData(v)).ToList();
+        _indexMax = _list.Select(v => v.Index).DefaultIfEmpty(0).Max();
+        StateHasChanged();
+    }
+
+
+    [CascadingParameter]
+    StateManager StateManager { get; set; }
+
+    private class VariableData
+    {
+        public VariableData(Variable data)
+        {
+            Name = data.Name;
+            Index = data.Index;
+            Min = data.Min;
+            Max = data.Max;
+            TotalBits = data.TotalBits;
+            StartSpvar = $"SPVAR_{data.Spvar}";
+            EndSpvar = $"SPVAR_{data.Spvar + (data.IsSplit ? 1 : 0)}";
+            StartBit = data.StartBit;
+            EndBit = data.EndBit;
+            CurrentValue = data.CurrentValue;
+        }
+
+        public string? Name { get; }
+        public int Index { get; }
+        public int Min { get; }
+        public int Max { get; }
+        public int TotalBits { get; }
+        public string StartSpvar { get; }
+        public string EndSpvar { get; set; }
+        public int StartBit { get; }
+        public int EndBit { get; }
+        public int CurrentValue { get; }
+    }
+
+    private void OpenEditDialog(VariableData data)
+    {
+        Console.WriteLine($"You are editing {data.Name}");
+        //TODO: Open edit dialog
+    }
+
+    private async Task RemoveAsync(VariableData variable)
+    {
+        var parameters = new DialogParameters
+                         {
+                             { "ContentText", "Do you really want to delete this variable? This process cannot be undone." },
+                             { "ButtonText", "Delete" },
+                             { "Color", Color.Error }
+                         };
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+        var result = await (await DialogService.ShowAsync<ConfirmDialog>("Delete", parameters, options)).Result;
+
+        if (result.Cancelled == false)
+        {
+            Console.WriteLine($"Removed variable '{variable.Name}' at index {variable.Index}");
+            await StateManager.RemoveVariableAsync(variable.Index);
+        }
+    }
+
+    private async Task MoveAsync(VariableData variable, bool up)
+    {
+        var direction = up ? "up" : "down";
+        Console.WriteLine($"Moved variable '{variable.Name}' at index {variable.Index} {direction}");
+        await StateManager.MoveVariableAsync(variable.Index, up);
+    }
+}

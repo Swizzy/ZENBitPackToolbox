@@ -1,4 +1,5 @@
 ﻿using Blazored.LocalStorage;
+using Newtonsoft.Json;
 using ZENBitPackToolbox.Models;
 
 namespace ZENBitPackToolbox.Managers;
@@ -30,21 +31,9 @@ public class StateManager
     public int TotalSpvarsUsed => (CurrentState.StartBit + TotalBitsUsed) / 32 + (CurrentState.StartBit + TotalBitsUsed % 32 > 0 ? 1 : 0);
     public int LastSpvarUsed => TotalSpvarsUsed + CurrentState.StartSpvar - (CurrentState.StartBit + TotalBitsUsed % 32 > 0 ? 1 : 0);
 
-    public async Task LoadAsync()
-    {
-        try
-        {
-            CurrentState = await LocalStorage.GetItemAsync<State>(KEY) ?? new State();
-            await DefaultStateIfNeededAsync();
-            StateChanged?.Invoke(this, EventArgs.Empty);
-        }
-        catch
-        {
-            await ResetAsync();
-        }
-    }
+    public async Task LoadAsync() => await UploadAsync(await LocalStorage.GetItemAsStringAsync(KEY));
 
-    private async Task SaveAsync() => await LocalStorage.SetItemAsync(KEY, CurrentState);
+    private async Task SaveAsync() => await LocalStorage.SetItemAsStringAsync(KEY, Download());
 
     public async Task ResetAsync()
     {
@@ -54,13 +43,13 @@ public class StateManager
         await SaveAsync();
     }
 
-    public string Download() => System.Text.Json.JsonSerializer.Serialize(CurrentState);
+    public string Download() => JsonConvert.SerializeObject(CurrentState);
 
     public async Task<bool> UploadAsync(string json)
     {
         try
         {
-            CurrentState = System.Text.Json.JsonSerializer.Deserialize<State>(json) ?? new State();
+            CurrentState = JsonConvert.DeserializeObject<State>(json) ?? new State();
             await DefaultStateIfNeededAsync();
             return true;
         }
@@ -90,7 +79,7 @@ public class StateManager
     {
         if (CurrentState.Spvars.ContainsKey(index) == false)
         {
-            CurrentState.Spvars[index] = new Spvar(this, $"SPVAR_{index}");
+            CurrentState.Spvars[index] = new Spvar($"SPVAR_{index}");
         }
         CurrentState.Spvars[index].SetCurrentValue(value);
         await SaveAsync();
@@ -100,9 +89,9 @@ public class StateManager
     {
         if (CurrentState.Spvars.ContainsKey(index) == false)
         {
-            CurrentState.Spvars[index] = new Spvar(this, $"SPVAR_{index}");
+            CurrentState.Spvars[index] = new Spvar($"SPVAR_{index}");
         }
-        CurrentState.Spvars[index].SetCurrentValue(value);
+        CurrentState.Spvars[index].SetExpectedValue(value);
         await SaveAsync();
     }
 
@@ -112,14 +101,60 @@ public class StateManager
 
     public List<Variable> GetVariables => CurrentState.Variables;
 
+    public async Task RemoveVariableAsync(int index)
+    {
+        var variable = CurrentState.Variables.FirstOrDefault(v => v.Index == index);
+        if (variable != null)
+        {
+            CurrentState.Variables.Remove(variable);
+            await RefreshVariablesAsync();
+        }
+    }
+
+    public async Task AddNewVariableAsync(Variable variable)
+    {
+        CurrentState.Variables.Add(variable);
+        await RefreshVariablesAsync();
+    }
+
+    public async Task MoveVariableAsync(int index, bool up)
+    {
+        var variable = CurrentState.Variables.FirstOrDefault(v => v.Index == index);
+        if (variable != null)
+        {
+            if (up)
+            {
+                var above = CurrentState.Variables.FirstOrDefault(v => v.Index == index - 1);
+                if (above != null)
+                {
+                    above.UpdateIndex(index);
+                    variable.UpdateIndex(index - 1);
+                    await RefreshVariablesAsync();
+                }
+            }
+            else
+            {
+                var below = CurrentState.Variables.FirstOrDefault(v => v.Index == index + 1);
+                if (below != null)
+                {
+                    below.UpdateIndex(index);
+                    variable.UpdateIndex(index + 1);
+                    await RefreshVariablesAsync();
+                }
+            }
+        }
+    }
+
     #region Private Methods
     private async Task RefreshVariablesAsync()
     {
+        int index = 0;
         var currentBit = CurrentState.StartBit;
         int currentSpvar = CurrentState.StartSpvar;
 
-        foreach (Variable variable in CurrentState.Variables)
+        foreach (Variable variable in CurrentState.Variables.OrderBy(v => v.Index))
         {
+            variable.UpdateIndex(index++);
             variable.SetSpvarInfo(currentSpvar, currentBit);
             await variable.SaveAsync(this);
             currentBit += variable.TotalBits;
@@ -129,6 +164,7 @@ public class StateManager
                 currentBit -= 32;
             }
         }
+        await SaveAsync();
         StateChanged?.Invoke(this, EventArgs.Empty);
     }
 

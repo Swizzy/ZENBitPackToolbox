@@ -129,6 +129,8 @@ namespace ZENBitPackToolbox.Models
             await manager.SetSpvarExpectedValueAsync(spvar_current_slot, spvar_current_value);
         }
 
+        public void UpdateIndex(int index) => Index = index;
+
         private void CalculateUsedBits() => TotalBits = Math.Max(CalculateBitsRequired(Min), CalculateBitsRequired(Max)) + (IsSigned ? 1 : 0);
 
         private int CalculateBitsRequired(int value)
