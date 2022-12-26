@@ -1,5 +1,17 @@
 ﻿@inherits LayoutComponentBase
 
-<main>
-    @Body
-</main>
+<MudThemeProvider Theme="new MudTheme()" @bind-IsDarkMode="@_isDarkMode" @ref="_mudThemeProvider" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudText Typo="Typo.h5" Class="ml-3">ZEN BitPack Toolbox by Swizzy</MudText>
+        <MudSpacer />
+        <MudIconButton @onclick="ToggleDarkMode" Color="Color.Inherit" Icon="@ModeIcon" Title="@ModeTitle" />
+    </MudAppBar>
+    <MudMainContent>
+        @*Body*@
+    </MudMainContent>
+</MudLayout>
+
