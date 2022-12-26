@@ -11,10 +11,12 @@
         <MudIconButton @onclick="ToggleDarkMode" Color="Color.Inherit" Icon="@ModeIcon" Title="@ModeTitle" />
     </MudAppBar>
     <MudMainContent>
-        @Body
+        <MudContainer Class="mb-12">
+            @Body
+        </MudContainer>
     </MudMainContent>
-    <MudAppBar Bottom="true" Dense="true">
-        <MudText>Version: @AppVersion</MudText>
+    <MudAppBar Dense="true" Bottom="true">
+        <MudText>Version: <MudLink Href="@RepoUrl">@AppVersion</MudLink></MudText>
     </MudAppBar>
 </MudLayout>
 
