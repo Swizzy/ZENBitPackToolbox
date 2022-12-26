@@ -53,7 +53,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-8TM6KRsEBlqE+tpm134eLY\/RR1rBXy2S26+u4Oxqtnc=",
+      "hash": "sha256-dT1qvsyHaahVSZGanKz0rgsqdHzbT8lo2O2qS+7Edes=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -125,7 +125,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.dll"
     },
     {
-      "hash": "sha256-eDiK\/s8BDFm64EORZFN77CE+w4+G\/1sxeuXeNn2YoZo=",
+      "hash": "sha256-pyUFMfC6lurNdOdvgjsgVF8Kkg3Bnp1hix7ScQnhzTc=",
       "url": "_framework\/MudBlazor.dll"
     },
     {
@@ -189,7 +189,7 @@
       "url": "_framework\/System.Drawing.Primitives.dll"
     },
     {
-      "hash": "sha256-mQbwUXJ+E6Kq9Ll85NQorYEI2tG0+bxM8EQQpH2EE6w=",
+      "hash": "sha256-Q07GKu8Vjy50Zw0AgLeaJOwBpfE3geCdUn3WAIRIpQA=",
       "url": "_framework\/System.Linq.dll"
     },
     {
@@ -301,7 +301,7 @@
       "url": "_framework\/System.Xml.XDocument.dll"
     },
     {
-      "hash": "sha256-L7jUvWDB4gfrfY0Y4I6PLioB4DAQ0+uBVadD+lHP\/xI=",
+      "hash": "sha256-X6pdYG+5yiptX4Q2RIEg96Zd8qwPJEkShn7vBGrK\/h4=",
       "url": "_framework\/ZENBitPackToolbox.dll"
     },
     {
@@ -313,5 +313,5 @@
       "url": "_content\/MudBlazor\/MudBlazor.min.js"
     }
   ],
-  "version": "\/y1wpVyY"
+  "version": "Gtq8NnuW"
 };
