@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using Blazored.LocalStorage;
 using MudBlazor;
 using Microsoft.JSInterop;
+using ZENBitPackToolbox.Managers;
 
 namespace ZENBitPackToolbox
 {
@@ -18,6 +19,9 @@ namespace ZENBitPackToolbox
         [Inject]
         IJSRuntime JsRuntime { get; set; }
 
+        [Inject]
+        private StateManager StateManager { get; set; }
+
         private MudThemeProvider? _mudThemeProvider;
         private string ModeIcon => _isDarkMode ? Icons.Outlined.LightMode : Icons.Outlined.DarkMode;
         private string ModeTitle => _isDarkMode ? "Switch to light theme" : "Switch to dark theme";
@@ -26,7 +30,7 @@ namespace ZENBitPackToolbox
 
         private bool _isDarkMode;
 
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnParametersSetAsync()
         {
             if (await LocalStorage.ContainKeyAsync(THEME_KEY))
             {
@@ -37,6 +41,12 @@ namespace ZENBitPackToolbox
                 _isDarkMode = await _mudThemeProvider!.GetSystemPreference();
                 SaveTheme();
             }
+            await base.OnParametersSetAsync();
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            await StateManager.LoadAsync();
             await base.OnInitializedAsync();
         }
 

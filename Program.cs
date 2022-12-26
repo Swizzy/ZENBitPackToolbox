@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using System.Reflection;
 using ZENBitPackToolbox;
+using ZENBitPackToolbox.Managers;
 
 public static class Program
 {
@@ -36,6 +37,7 @@ public static class Program
         builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
         builder.Services.AddMudServices();
         builder.Services.AddBlazoredLocalStorage();
+        builder.Services.AddScoped<StateManager>();
 
         await builder.Build().RunAsync();
     }

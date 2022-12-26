@@ -12,7 +12,9 @@
     </MudAppBar>
     <MudMainContent>
         <MudContainer Class="mb-12">
-            @Body
+            <CascadingValue Value="@StateManager" IsFixed="true">
+                @Body
+            </CascadingValue>
         </MudContainer>
     </MudMainContent>
     <MudAppBar Dense="true" Bottom="true">
