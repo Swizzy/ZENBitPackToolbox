@@ -12,7 +12,10 @@ jobs:
     steps:
 
     # uses GitHub's checkout action to checkout code form the master branch
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+        submodules: 'recursive'
 
     # sets up .NET Core SDK 7
     - name: Setup .NET Core SDK
