@@ -1,0 +1,3 @@
+[submodule "Libraries/MudBlazor"]
+	path = Libraries/MudBlazor
+	url = https://github.com/Swizzy/MudBlazor
