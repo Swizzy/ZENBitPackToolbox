@@ -143,7 +143,7 @@
 
         var result = await (await DialogService.ShowAsync<ConfirmDialog>("Delete", parameters, options)).Result;
 
-        if (result.Cancelled == false)
+        if (result.Canceled == false)
         {
             await StateManager.RemoveVariableAsync(variable.Index);
         }
