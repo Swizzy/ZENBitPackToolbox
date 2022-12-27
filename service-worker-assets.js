@@ -9,7 +9,7 @@
       "url": "icon-512.png"
     },
     {
-      "hash": "sha256-oShm3G3nXkBAL\/g\/vA\/soDj51ER7bgZ3zGR+cRq0G9M=",
+      "hash": "sha256-D52IvB621rIqa0\/LmFr5jOZFnINHdDwOFHtCaOUYsUA=",
       "url": "index.html"
     },
     {
@@ -53,7 +53,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-\/Hga8SeIsUlcgIPORdnzb+mCbrmU\/fEtwUNY+a\/TRV0=",
+      "hash": "sha256-hIowjcY1yD35vVQxcWk2zSOa5lp\/XY\/+63DMQxx\/gd4=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -301,7 +301,7 @@
       "url": "_framework\/System.Xml.XDocument.dll"
     },
     {
-      "hash": "sha256-ZZ0rO6WHYG\/1QZAv675P1vKrxY7xLdJFcfsGANa54w8=",
+      "hash": "sha256-ZicVuHmhvyiuE1o30Tcd6Fq0nzrKzkts\/g3ywtmy\/2g=",
       "url": "_framework\/ZENBitPackToolbox.dll"
     },
     {
@@ -313,5 +313,5 @@
       "url": "_content\/MudBlazor\/MudBlazor.min.js"
     }
   ],
-  "version": "hOqMxKlx"
+  "version": "iEH1PQ\/N"
 };
