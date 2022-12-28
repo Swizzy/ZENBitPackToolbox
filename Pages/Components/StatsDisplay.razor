@@ -27,10 +27,17 @@
     {
         TotalBitsUsed = StateManager.TotalBitsUsed;
         TotalSpvarsUsed = StateManager.TotalSpvarsUsed;
-        LastSpvarUsed = $"SPVAR_{StateManager.LastSpvarUsed}";
+        var lastSpvarUsed = StateManager.LastSpvarUsed;
+        if (lastSpvarUsed <= 0)
+        {
+            LastSpvarUsed = "N/A";
+        }
+        else
+        {
+            LastSpvarUsed = $"SPVAR_{lastSpvarUsed}";
+        }
         StateHasChanged();
     }
-
 
     [CascadingParameter]
     StateManager StateManager { get; set; }
