@@ -7,7 +7,7 @@
 
 <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="ResetAsync" StartIcon="@Icons.Filled.Clear">Reset</MudButton>
 <MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="ShowAddVariableDialogAsync" StartIcon="@Icons.Filled.Add">Add new Variable</MudButton>
-<MudButton Color="Color.Warning" Variant="Variant.Filled" OnClick="RecalculateAsync" StartIcon="@Icons.Filled.Refresh">Recalculate</MudButton>
+<MudButton Color="Color.Warning" Variant="Variant.Filled" OnClick="RecalculateAsync" StartIcon="@Icons.Filled.Refresh">Recalculate expected</MudButton>
 <MudButton Color="Color.Info" Variant="Variant.Filled" OnClick="DownloadAsync" StartIcon="@Icons.Filled.Download">Download config</MudButton>
 <MudFileUpload T="IBrowserFile" FilesChanged="UploadAsync" Accept=".json" ref="@FileUpload" Style="display: inline-block; margin-top: 0;">
     <ButtonTemplate>
