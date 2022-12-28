@@ -2,9 +2,12 @@
 
 <MudSimpleTable>
     <tbody>
-    <tr><td>Total bits used</td><td>@TotalBitsUsed</td></tr>
-    <tr><td>Total SPVARs used</td><td>@TotalSpvarsUsed</td></tr>
-    <tr><td>Last SPVAR Used</td><td>@LastSpvarUsed</td></tr>
+        <tr><td>First bit used</td><td>@StartBit</td></tr>
+        <tr><td>Last bit used</td><td>@LastBit</td></tr>
+        <tr><td>Total bits used</td><td>@TotalBitsUsed</td></tr>
+        <tr><td>First SPVAR used</td><td>@StartSpvar</td></tr>
+        <tr><td>Last SPVAR Used</td><td>@LastSpvarUsed</td></tr>
+        <tr><td>Total SPVARs used</td><td>@TotalSpvarsUsed</td></tr>
     </tbody>
 </MudSimpleTable>
 
@@ -23,10 +26,28 @@
         return base.OnParametersSetAsync();
     }
 
+    public int StartBit;
+    public int LastBit => (StartBit + TotalBitsUsed) % 32 + ((StartBit + TotalBitsUsed) % 32 == 0 && TotalBitsUsed > 1 ? 31 : 0);
+    public int TotalBitsUsed;
+
+    public string StartSpvar;
+    public string LastSpvarUsed;
+    public int TotalSpvarsUsed;
+
     private void StateManagerOnStateChanged(object? sender, EventArgs e)
     {
+
         TotalBitsUsed = StateManager.TotalBitsUsed;
         TotalSpvarsUsed = StateManager.TotalSpvarsUsed;
+        var startSpvar = StateManager.StartSpvar;
+        if (startSpvar <= 0)
+        {
+            StartSpvar = "N/A";
+        }
+        else
+        {
+            StartSpvar = $"SPVAR_{startSpvar}";
+        }
         var lastSpvarUsed = StateManager.LastSpvarUsed;
         if (lastSpvarUsed <= 0)
         {
@@ -41,8 +62,4 @@
 
     [CascadingParameter]
     StateManager StateManager { get; set; }
-
-    public int TotalBitsUsed;
-    public int TotalSpvarsUsed;
-    public string LastSpvarUsed;
 }

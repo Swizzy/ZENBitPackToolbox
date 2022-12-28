@@ -29,7 +29,7 @@ public class StateManager
 
     public int TotalBitsUsed => CurrentState.Variables.Sum(v => v.TotalBits);
     public int TotalSpvarsUsed => (CurrentState.StartBit + TotalBitsUsed) / 32 + (CurrentState.StartBit + TotalBitsUsed % 32 > 0 ? 1 : 0);
-    public int LastSpvarUsed => TotalSpvarsUsed + CurrentState.StartSpvar - (CurrentState.StartBit + TotalBitsUsed % 32 > 0 ? 0 : 1);
+    public int LastSpvarUsed => TotalSpvarsUsed + CurrentState.StartSpvar - 1;
     public int StartSpvar => CurrentState.StartSpvar;
     public int StartBit => CurrentState.StartBit;
 
