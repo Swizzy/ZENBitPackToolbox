@@ -5,7 +5,7 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Elevation="1">
+    <MudAppBar Elevation="1" Color="Color.Dark">
         <MudText Typo="Typo.h5" Class="ml-3">ZEN BitPack Toolbox by Swizzy</MudText>
         <MudSpacer />
         <MudIconButton @onclick="ToggleDarkMode" Color="Color.Inherit" Icon="@ModeIcon" Title="@ModeTitle" />
@@ -17,8 +17,8 @@
             </CascadingValue>
         </MudContainer>
     </MudMainContent>
-    <MudAppBar Dense="true" Bottom="true">
-        <MudText>Version: <MudLink Href="@RepoUrl">@AppVersion</MudLink></MudText>
+    <MudAppBar Dense="true" Bottom="true" Elevation="1" Color="Color.Dark">
+        <MudText>Version: <MudLink Href="@RepoUrl" Color="Color.Info">@AppVersion</MudLink></MudText>
     </MudAppBar>
 </MudLayout>
 
