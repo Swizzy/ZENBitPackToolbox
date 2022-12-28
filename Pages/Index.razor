@@ -5,6 +5,7 @@
 
 <MudButton Color="Color.Error" Variant="Variant.Outlined" OnClick="ResetAsync">Reset</MudButton>
 <MudButton Color="Color.Success" Variant="Variant.Outlined" OnClick="ShowAddVariableDialogAsync">Add new Variable</MudButton>
+<MudButton Color="Color.Warning" Variant="Variant.Outlined" OnClick="RecalculateAsync">Recalculate</MudButton>
 <MudTabs Class="mt-1">
     <MudTabPanel Text="Stats">
         <StatsDisplay />
@@ -23,6 +24,7 @@
     StateManager StateManager { get; set; }
 
     private async Task ResetAsync() => await StateManager.ResetAsync();
+    private async Task RecalculateAsync() => await StateManager.RecalculateAsync();
     private async Task ShowAddVariableDialogAsync()
     {
         var parameters = new DialogParameters {
