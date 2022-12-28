@@ -46,11 +46,13 @@
                 }
             </td>
             <td>
-                <MudIconButton Color="Color.Success" Variant="Variant.Filled" Icon="@Icons.Filled.ArrowUpward" Size="Size.Small" OnClick="() => MoveAsync(variable, true)" Disabled="variable.Index == 0" Title="Move variable up" />
-                <MudIconButton Color="Color.Success" Variant="Variant.Filled" Icon="@Icons.Filled.ArrowDownward" Size="Size.Small" OnClick="() => MoveAsync(variable, false)" Disabled="variable.Index == _indexMax" Title="Move variable down" />
-                <MudIconButton Color="Color.Info" Variant="Variant.Filled" Icon="@Icons.Filled.Refresh" Size="Size.Small" OnClick="() => ReloadCurrentValueAsync(variable)" Title="Reload from current value" />
-                <MudIconButton Color="Color.Warning" Variant="Variant.Filled" Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => OpenEditDialogAsync(variable)" Title="Modify the variable" />
-                <MudIconButton Color="Color.Error" Variant="Variant.Filled" Icon="@Icons.Filled.Remove" Size="Size.Small" OnClick="() => RemoveAsync(variable)" Title="Remove the variable" />
+                <MudButtonGroup Variant="Variant.Filled" Size="Size.Small" OverrideStyles="false">
+                    <MudIconButton Color="Color.Success" Variant="Variant.Filled" Icon="@Icons.Filled.ArrowUpward" OnClick="() => MoveAsync(variable, true)" Disabled="variable.Index == 0" Title="Move variable up" />
+                    <MudIconButton Color="Color.Success" Variant="Variant.Filled" Icon="@Icons.Filled.ArrowDownward" OnClick="() => MoveAsync(variable, false)" Disabled="variable.Index == _indexMax" Title="Move variable down" />
+                    <MudIconButton Color="Color.Info" Variant="Variant.Filled" Icon="@Icons.Filled.Refresh" OnClick="() => ReloadCurrentValueAsync(variable)" Title="Reload from current value" />
+                    <MudIconButton Color="Color.Warning" Variant="Variant.Filled" Icon="@Icons.Filled.Edit" OnClick="() => OpenEditDialogAsync(variable)" Title="Modify the variable" />
+                    <MudIconButton Color="Color.Error" Variant="Variant.Filled" Icon="@Icons.Filled.Remove" OnClick="() => RemoveAsync(variable)" Title="Remove the variable" />
+                </MudButtonGroup>
             </td>
         </tr>
     }
