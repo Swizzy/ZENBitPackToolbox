@@ -29,7 +29,7 @@ namespace ZENBitPackToolbox.Models
             {
                 if (IsSplit)
                 {
-                    return StartBit + TotalBits - 32;
+                    return StartBit + TotalBits - 33;
                 }
                 return StartBit + TotalBits - 1;
             }
