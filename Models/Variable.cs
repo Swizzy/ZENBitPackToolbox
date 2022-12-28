@@ -81,6 +81,7 @@ namespace ZENBitPackToolbox.Models
             var spvar_bits = TotalBits;
             var spvar_current_slot = Spvar;
             var spvar_current_value = manager.GetCurrentSpvarValue(Spvar);
+            spvar_current_value >>= spvar_current_bit;
 
             if (spvar_bits >= 32 - spvar_current_bit) // Check if we are dealing with a split SPVAR value, essentially if the current position means we're using more than 32 bits in the SPVAR, we need to retrieve the missing bits from the next SPVAR and put them back to our current value, we use the same space saving trick here as in the save function
             {
