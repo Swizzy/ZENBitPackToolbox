@@ -30,6 +30,8 @@ public class StateManager
     public int TotalBitsUsed => CurrentState.Variables.Sum(v => v.TotalBits);
     public int TotalSpvarsUsed => (CurrentState.StartBit + TotalBitsUsed) / 32 + (CurrentState.StartBit + TotalBitsUsed % 32 > 0 ? 1 : 0);
     public int LastSpvarUsed => TotalSpvarsUsed + CurrentState.StartSpvar - (CurrentState.StartBit + TotalBitsUsed % 32 > 0 ? 0 : 1);
+    public int StartSpvar => CurrentState.StartSpvar;
+    public int StartBit => CurrentState.StartBit;
 
     public async Task LoadAsync() => await UploadAsync(await LocalStorage.GetItemAsStringAsync(KEY));
 
@@ -63,15 +65,9 @@ public class StateManager
         }
     }
 
-    public async Task SetStartSpvarAsync(int startSpvar)
+    public async Task ConfigureAsync(int startSpvar, int startBit)
     {
         CurrentState.StartSpvar = startSpvar;
-        await RefreshVariablesAsync();
-        await SaveAsync();
-    }
-
-    public async Task SetStartBitAsync(int startBit)
-    {
         CurrentState.StartBit = startBit;
         await RefreshVariablesAsync();
         await SaveAsync();
@@ -101,6 +97,7 @@ public class StateManager
     }
 
     public int GetExpectedSpvarValue(int spvar) => CurrentState.Spvars.ContainsKey(spvar) ? CurrentState.Spvars[spvar].ExpectedValue : 0;
+
     public int GetCurrentSpvarValue(int spvar) => CurrentState.Spvars.ContainsKey(spvar) ? CurrentState.Spvars[spvar].CurrentValue : 0;
 
     public Dictionary<int, Spvar> GetSpvars => CurrentState.Spvars;

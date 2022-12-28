@@ -1,0 +1,45 @@
+﻿@using ZENBitPackToolbox.Managers
+<MudDialog>
+    <DialogContent>
+        <MudNumericField T="int"
+                         @bind-Value="@StartSpvar"
+                         Label="Starting SPVAR"
+                         Min="1"
+                         Max="64"
+                         Step="1"
+                         Immediate="true"
+                         Clearable="false" />
+        <MudNumericField T="int"
+                         @bind-Value="@StartBit"
+                         Label="Starting bit"
+                         Min="0"
+                         Max="32"
+                         Step="1"
+                         Immediate="true"
+                         Clearable="false" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="Submit">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    MudDialogInstance MudDialog { get; set; }
+
+    [Parameter]
+    public Func<StateManager> StateManager { get; set; }
+    [Parameter]
+    public int StartSpvar { get; set; }
+    [Parameter]
+    public int StartBit { get; set; }
+
+    async Task Submit()
+    {
+        await StateManager().ConfigureAsync(StartSpvar, StartBit);
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    void Cancel() => MudDialog.Cancel();
+}

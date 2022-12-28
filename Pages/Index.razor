@@ -1,5 +1,4 @@
 ﻿@page "/"
-@using ZENBitPackToolbox.Pages.Components
 @using ZENBitPackToolbox.Managers
 @using System.Text
 @using Microsoft.AspNetCore.Components.Forms
@@ -15,6 +14,7 @@
         <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Success" for="@context" StartIcon="@Icons.Filled.Upload">Upload Config</MudButton>
     </ButtonTemplate>
 </MudFileUpload>
+<MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="ShowConfigureDialogAsync" StartIcon="@Icons.Filled.Settings">Configure</MudButton>
 
 <MudTabs Class="mt-1">
     <MudTabPanel Text="Stats">
@@ -33,7 +33,7 @@
     [CascadingParameter]
     StateManager StateManager { get; set; }
 
-    private MudFileUpload<IBrowserFile>? FileUpload;
+    private MudFileUpload<IBrowserFile>? FileUpload { get; set; } = null;
 
     private async Task ResetAsync() => await StateManager.ResetAsync();
     private async Task RecalculateAsync() => await StateManager.RecalculateAsync();
@@ -71,5 +71,18 @@
             await RecalculateAsync();
         }
         FileUpload!.Reset();
+    }
+
+    private async Task ShowConfigureDialogAsync()
+    {
+        var parameters = new DialogParameters {
+                                                  { "StateManager", () => StateManager },
+                                                  { "StartSpvar", StateManager.StartSpvar },
+                                                  { "StartBit", StateManager.StartBit }
+                                              };
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium };
+
+        await (await DialogService.ShowAsync<ConfigureDialog>("Configure bit packer", parameters, options)).Result;
     }
 }
