@@ -2,9 +2,9 @@ using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
-using System.Reflection;
-using ZENBitPackToolbox;
 using ZENBitPackToolbox.Managers;
+
+namespace ZENBitPackToolbox;
 
 public static class Program
 {
@@ -13,19 +13,8 @@ public static class Program
 
     static Program()
     {
-        var assembly = Assembly.GetAssembly(typeof(Program))!;
-        Type? gitver = assembly.GetTypes().FirstOrDefault(t => t.Name.EndsWith("GitVersionInformation", StringComparison.CurrentCultureIgnoreCase));
-
-        if (gitver != null)
-        {
-            Version = "v" + gitver.GetField("SemVer")!.GetValue(null) + " (" + gitver.GetField("ShortSha")!.GetValue(null) + ")";
-            RepoUrl = "https://github.com/Swizzy/ZENBitPackToolbox/commit/" + gitver.GetField("Sha")!.GetValue(null);
-        }
-        else
-        {
-            Version = "ERROR";
-            RepoUrl = "https://github.com/Swizzy/ZENBitPackToolbox";
-        }
+        Version = $"v{GitVersionInformation.SemVer} ({GitVersionInformation.ShortSha})";
+        RepoUrl = "https://github.com/Swizzy/ZENBitPackToolbox/commit/" + GitVersionInformation.Sha;
     }
 
     public static async Task Main(string[] args)
