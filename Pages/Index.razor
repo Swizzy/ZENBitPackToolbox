@@ -1,11 +1,21 @@
 ﻿@page "/"
 @using ZENBitPackToolbox.Pages.Components
 @using ZENBitPackToolbox.Managers
+@using System.Text
+@using Microsoft.AspNetCore.Components.Forms
 @inject IDialogService DialogService
+@inject IJSRuntime JSRuntime
 
-<MudButton Color="Color.Error" Variant="Variant.Outlined" OnClick="ResetAsync">Reset</MudButton>
-<MudButton Color="Color.Success" Variant="Variant.Outlined" OnClick="ShowAddVariableDialogAsync">Add new Variable</MudButton>
-<MudButton Color="Color.Warning" Variant="Variant.Outlined" OnClick="RecalculateAsync">Recalculate</MudButton>
+<MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="ResetAsync" StartIcon="@Icons.Filled.Clear">Reset</MudButton>
+<MudButton Color="Color.Success" Variant="Variant.Filled" OnClick="ShowAddVariableDialogAsync" StartIcon="@Icons.Filled.Add">Add new Variable</MudButton>
+<MudButton Color="Color.Warning" Variant="Variant.Filled" OnClick="RecalculateAsync" StartIcon="@Icons.Filled.Refresh">Recalculate</MudButton>
+<MudButton Color="Color.Info" Variant="Variant.Filled" OnClick="DownloadAsync" StartIcon="@Icons.Filled.Download">Download config</MudButton>
+<MudFileUpload T="IBrowserFile" FilesChanged="UploadAsync" Accept=".json" ref="@FileUpload" Style="display: inline-block; margin-top: 0;">
+    <ButtonTemplate>
+        <MudButton HtmlTag="label" Variant="Variant.Filled" Color="Color.Success" for="@context" StartIcon="@Icons.Filled.Upload">Upload Config</MudButton>
+    </ButtonTemplate>
+</MudFileUpload>
+
 <MudTabs Class="mt-1">
     <MudTabPanel Text="Stats">
         <StatsDisplay />
@@ -23,6 +33,8 @@
     [CascadingParameter]
     StateManager StateManager { get; set; }
 
+    private MudFileUpload<IBrowserFile>? FileUpload;
+
     private async Task ResetAsync() => await StateManager.ResetAsync();
     private async Task RecalculateAsync() => await StateManager.RecalculateAsync();
     private async Task ShowAddVariableDialogAsync()
@@ -34,5 +46,30 @@
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium };
 
         await (await DialogService.ShowAsync<AddVariableDialog>("Add Variable", parameters, options)).Result;
+    }
+
+    private async Task DownloadAsync()
+    {
+        await using (var ms = new MemoryStream())
+        {
+            await using (var writer = new StreamWriter(ms, encoding: Encoding.UTF8, leaveOpen: true))
+            {
+                var content = StateManager.Download();
+                await writer.WriteAsync(content);
+                await writer.FlushAsync();
+            }
+            ms.Seek(0, SeekOrigin.Begin); // Reset the memory stream so it can be read correctly
+            await JSRuntime.InvokeVoidAsync("downloadFileFromStream", "ZENBitPackToolbox.json", new DotNetStreamReference(ms));
+        }
+    }
+
+    private async Task UploadAsync(IBrowserFile file)
+    {
+        var fileContent = await new StreamReader(file.OpenReadStream()).ReadToEndAsync();
+        if (await StateManager.UploadAsync(fileContent))
+        {
+            await RecalculateAsync();
+        }
+        FileUpload!.Reset();
     }
 }
