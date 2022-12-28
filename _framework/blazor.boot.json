@@ -24,7 +24,7 @@
       "Microsoft.Extensions.Primitives.dll": "sha256-eXvGx2jcjpTPEJoAHBsW\/VuMPbNyyU+AsuhPmkzSSRY=",
       "Microsoft.JSInterop.dll": "sha256-P7PevaQMhehsfaJrprLCN0AIgniHX7n4RKM6n7RjyWM=",
       "Microsoft.JSInterop.WebAssembly.dll": "sha256-bn\/jJGkSeaQbmqAl6uUM0y1joLrVEzldOc3y5mscYMk=",
-      "MudBlazor.dll": "sha256-2SyB5j3K5EAHNBzv+263GtTvHDU+09b1Rv095me5r3M=",
+      "MudBlazor.dll": "sha256-Nik9bCZux9FjgvZfk1MnYMMlptOJmiBsI9LqazJBb7g=",
       "Newtonsoft.Json.dll": "sha256-SBbEJ29XXk2FuAYzoN8urfKUlv4AvcM814Q+YTc73g4=",
       "System.Collections.Concurrent.dll": "sha256-hkrWTllcSs56G6UpHjVN3CVcFJOJhC6suOgvHesXwSE=",
       "System.Collections.dll": "sha256-ey5IK\/k4pdO+mHjSaNi8MNkhjHIkV3GzaVpsUEKbsgA=",
@@ -68,7 +68,7 @@
       "System.Xml.Linq.dll": "sha256-ap5WySSl0wqPalvBrpgGd4e8ik0nB8N8D5hQBUhZXho=",
       "System.Xml.ReaderWriter.dll": "sha256-BvLz4Tvqcj7Y5CMfJqsY9yjP2xVdLI+xTwTQk5jilvI=",
       "System.Xml.XDocument.dll": "sha256-XMRx47obyWQe5PVqmkeHZ7wrjIqAhJs\/jpLVM0iA7Bs=",
-      "ZENBitPackToolbox.dll": "sha256-ZriAUukI4ZdsxNAlDXX08AwOHx7I41JMAtsPEpFy+aM="
+      "ZENBitPackToolbox.dll": "sha256-V1ddAbFNvvkBg38WcB0ByfDakZgYudRZWVrTFwF9Z1Q="
     },
     "extensions": null,
     "lazyAssembly": null,
