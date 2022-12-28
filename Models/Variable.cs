@@ -31,7 +31,7 @@ namespace ZENBitPackToolbox.Models
                 {
                     return StartBit + TotalBits - 33;
                 }
-                return StartBit + TotalBits - 1;
+                return StartBit + Math.Max(TotalBits - 1, 0);
             }
         }
 
