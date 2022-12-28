@@ -51,6 +51,8 @@ public class StateManager
         {
             CurrentState = JsonConvert.DeserializeObject<State>(json) ?? new State();
             await DefaultStateIfNeededAsync();
+            StateChanged?.Invoke(this, EventArgs.Empty);
+            await SaveAsync();
             return true;
         }
         catch (Exception ex)

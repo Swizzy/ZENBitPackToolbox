@@ -1,4 +1,3 @@
-using System.Reflection;
 using Microsoft.AspNetCore.Components;
 using Blazored.LocalStorage;
 using MudBlazor;
@@ -41,12 +40,12 @@ namespace ZENBitPackToolbox
                 _isDarkMode = await _mudThemeProvider!.GetSystemPreference();
                 SaveTheme();
             }
+            await StateManager.LoadAsync();
             await base.OnParametersSetAsync();
         }
 
         protected override async Task OnInitializedAsync()
         {
-            await StateManager.LoadAsync();
             await base.OnInitializedAsync();
         }
 
