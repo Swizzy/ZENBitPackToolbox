@@ -1,5 +1,5 @@
-﻿using Blazored.LocalStorage;
-using Newtonsoft.Json;
+﻿using System.Text.Json;
+using Blazored.LocalStorage;
 using ZENBitPackToolbox.Models;
 
 namespace ZENBitPackToolbox.Managers;
@@ -15,8 +15,8 @@ public class StateManager
 
     private class State
     {
-        public Dictionary<int, Spvar> Spvars { get; } = new();
-        public List<Variable> Variables { get; } = new();
+        public Dictionary<int, Spvar> Spvars { get; set; } = new();
+        public List<Variable> Variables { get; set; } = new();
         public int StartSpvar { get; set; }
         public int StartBit { get; set; }
     }
@@ -45,13 +45,13 @@ public class StateManager
         await SaveAsync();
     }
 
-    public string Download() => JsonConvert.SerializeObject(CurrentState);
+    public string Download() => JsonSerializer.Serialize(CurrentState);
 
     public async Task<bool> UploadAsync(string json)
     {
         try
         {
-            CurrentState = JsonConvert.DeserializeObject<State>(json) ?? new State();
+            CurrentState = JsonSerializer.Deserialize<State>(json) ?? new State();
             await DefaultStateIfNeededAsync();
             StateChanged?.Invoke(this, EventArgs.Empty);
             await SaveAsync();
