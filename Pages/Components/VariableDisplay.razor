@@ -157,7 +157,6 @@
 
     private async Task MoveAsync(VariableData variable, bool up)
     {
-        var direction = up ? "up" : "down";
         await StateManager.MoveVariableAsync(variable.Index, up);
     }
 
