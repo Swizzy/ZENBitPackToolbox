@@ -6,15 +6,15 @@
     <style>
         .floating-update-button {
             position: fixed;
-            right: 2rem;
-            bottom: 2rem;
+            right: 1rem;
+            bottom: 4rem;
             padding: 1rem 1.5rem;
             animation: fadein 2s ease-out;
         }
 
         @@keyframes fadein {
             from { right: -100%; }
-            to { right: 2rem; }
+            to { right: 1rem; }
         }
     </style>
     <MudButton Color="Color.Warning" Variant="Variant.Filled" OnClick="() => NavigationManager.NavigateTo(NavigationManager.Uri, true)" Class="floating-update-button">
