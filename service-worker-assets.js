@@ -33,7 +33,7 @@
       "url": "_framework\/icudt.dat"
     },
     {
-      "hash": "sha256-KRv15TUDAxkvyvW1hybTnR1J\/ZummdoMw\/mj\/iEzB4c=",
+      "hash": "sha256-W8S0qoS4t0g7LmmE+6o5Z3ozjpHHaP\/\/rWMWQ4BoCCg=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -193,7 +193,7 @@
       "url": "_framework\/System.Threading.dll"
     },
     {
-      "hash": "sha256-ebcJ0wTJARPJzLnv16u8MwMXT9\/h2NNa5cSarSKxzCo=",
+      "hash": "sha256-GF4Ay22HVcSL6t2fKIBOBHey+1hiMWjixK9gjsmQFUo=",
       "url": "_framework\/ZENBitPackToolbox.dll"
     },
     {
@@ -213,7 +213,7 @@
       "url": "icon-512.png"
     },
     {
-      "hash": "sha256-Z3MnR6bK9Fz0MQgY87G8fq4len3uA+7hFg60KuvIZ5g=",
+      "hash": "sha256-gPhl759+QdVRKaNajAvWHJBuOPyhOE6G+3dZRi33Fj4=",
       "url": "index.html"
     },
     {
@@ -237,5 +237,5 @@
       "url": "sw-registrator.js"
     }
   ],
-  "version": "hX0mZ3CR"
+  "version": "FdbjRkhX"
 };
