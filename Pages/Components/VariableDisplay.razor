@@ -4,16 +4,17 @@
 
 <MudSimpleTable Dense="true">
     <thead>
-    <tr>
-        <th>Variable</th>
-        <th>Min value</th>
-        <th>Max value</th>
-        <th>Current value</th>
-        <th>Size</th>
-        <th>SPVARs used</th>
-        <th>Bits used</th>
-        <th></th>
-    </tr>
+        <tr>
+            <th>Variable</th>
+            <th>Min value</th>
+            <th>Max value</th>
+            <th>Expected value</th>
+            <th>Current value</th>
+            <th>Size</th>
+            <th>SPVARs used</th>
+            <th>Bits used</th>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
     @foreach (var variable in _list.OrderBy(d => d.Index))
@@ -22,6 +23,7 @@
             <td>@variable.Name</td>
             <td>@variable.Min</td>
             <td>@variable.Max</td>
+            <td>@variable.ExpectedValue</td>
             <td>@variable.CurrentValue</td>
             <td>@variable.TotalBits</td>
             <td>
@@ -99,6 +101,7 @@
             EndSpvar = $"SPVAR_{data.Spvar + (data.IsSplit ? 1 : 0)}";
             StartBit = data.StartBit;
             EndBit = data.EndBit;
+            ExpectedValue = data.ExpectedValue;
             CurrentValue = data.CurrentValue;
         }
 
@@ -111,6 +114,7 @@
         public string EndSpvar { get; set; }
         public int StartBit { get; }
         public int EndBit { get; }
+        public int ExpectedValue { get; }
         public int CurrentValue { get; }
     }
 

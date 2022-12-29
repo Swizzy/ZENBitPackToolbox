@@ -20,6 +20,7 @@ namespace ZENBitPackToolbox.Models
         public int Min { get; set; }
         public int Max { get; set; }
 
+        public int ExpectedValue { get; set; }
         public int CurrentValue { get; set; }
 
         public int StartBit { get; set; }
@@ -40,7 +41,7 @@ namespace ZENBitPackToolbox.Models
         public bool IsSplit => TotalBits > 32 - StartBit;
         public bool IsSigned => Min < 0 || Max < 0;
 
-        public bool Update(string? name, int index, int min, int max, int currentValue)
+        public bool Update(string? name, int index, int min, int max, int expectedValue)
         {
             bool recalculate = false;
             Name = name;
@@ -63,8 +64,8 @@ namespace ZENBitPackToolbox.Models
                 CalculateUsedBits();
             }
 
-            recalculate = recalculate || CurrentValue != currentValue;
-            CurrentValue = Math.Clamp(currentValue, min, max);
+            recalculate = recalculate || ExpectedValue != expectedValue;
+            ExpectedValue = Math.Clamp(expectedValue, min, max);
 
             return recalculate;
         }
@@ -106,7 +107,7 @@ namespace ZENBitPackToolbox.Models
         {
             var spvar_current_bit = StartBit;
             var spvar_bits = TotalBits;
-            var val = CurrentValue;
+            var val = ExpectedValue;
             if (IsSigned)
             {
                 val = Pack(val, spvar_bits);
