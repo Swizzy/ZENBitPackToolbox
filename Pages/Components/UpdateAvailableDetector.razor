@@ -1,40 +1,28 @@
-﻿@inject IJSRuntime _jsRuntime
+﻿@inject IJSRuntime JSRuntime
 @inject NavigationManager NavigationManager
-
-@if (_newVersionAvailable)
-{
-    <style>
-        .floating-update-button {
-            position: fixed;
-            right: 1rem;
-            bottom: 4rem;
-            padding: 1rem 1.5rem;
-            animation: fadein 2s ease-out;
-        }
-
-        @@keyframes fadein {
-            from { right: -100%; }
-            to { right: 1rem; }
-        }
-    </style>
-    <MudButton Color="Color.Warning" Variant="Variant.Filled" OnClick="() => NavigationManager.NavigateTo(NavigationManager.Uri, true)" Class="floating-update-button">
-        A new version of the application is available. Click here to reload.
-    </MudButton>
-}
+@inject ISnackbar Snackbar
 
 @code {
-    private bool _newVersionAvailable;
-
     protected override async Task OnInitializedAsync()
     {
-        await _jsRuntime.InvokeVoidAsync(identifier: "registerForUpdateAvailableNotification", DotNetObjectReference.Create(this), nameof(OnUpdateAvailable));
+        await JSRuntime.InvokeVoidAsync(identifier: "registerForUpdateAvailableNotification", DotNetObjectReference.Create(this), nameof(OnUpdateAvailable));
     }
 
     [JSInvokable(nameof(OnUpdateAvailable))]
     public Task OnUpdateAvailable()
     {
-        _newVersionAvailable = true;
-        StateHasChanged();
+        Snackbar.Add("A new version of the application is available. Click here to reload.", Severity.Info, options =>
+                                                                                                            {
+                                                                                                                options.RequireInteraction = true;
+                                                                                                                options.ShowCloseIcon = false;
+                                                                                                                options.CloseAfterNavigation = true;
+                                                                                                                options.Icon = Icons.Filled.Update;
+                                                                                                                options.Onclick = _ =>
+                                                                                                                                  {
+                                                                                                                                      NavigationManager.NavigateTo(NavigationManager.Uri, true);
+                                                                                                                                      return Task.CompletedTask;
+                                                                                                                                  };
+                                                                                                            });
         return Task.CompletedTask;
     }
 }
