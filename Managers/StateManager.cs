@@ -80,6 +80,7 @@ public class StateManager
             CurrentState.Spvars[index] = new Spvar($"SPVAR_{index}");
         }
         CurrentState.Spvars[index].CurrentValue = value;
+        await RecalculateAsync();
         await SaveAsync();
     }
 
@@ -164,16 +165,13 @@ public class StateManager
         var variable = CurrentState.Variables.FirstOrDefault(v => v.Index == index);
         if (variable != null)
         {
-            variable.Load(this, true);
+            variable.Load(this);
             await SaveAsync();
             StateChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 
-    public async Task RecalculateAsync()
-    {
-        await RefreshVariablesAsync();
-    }
+    public async Task RecalculateAsync() => await RefreshVariablesAsync();
 
     #region Private Methods
     private async Task RefreshVariablesAsync()
@@ -192,6 +190,7 @@ public class StateManager
             variable.UpdateIndex(index++);
             variable.SetSpvarInfo(currentSpvar, currentBit);
             await variable.SaveAsync(this);
+            variable.Load(this);
             currentBit += variable.TotalBits;
             if (currentBit >= 32)
             {

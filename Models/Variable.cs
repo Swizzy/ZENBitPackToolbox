@@ -76,7 +76,7 @@ namespace ZENBitPackToolbox.Models
             Spvar = index;
         }
 
-        public void Load(StateManager manager, bool showRealValue)
+        public void Load(StateManager manager)
         {
             var spvar_current_bit = StartBit;
             var spvar_bits = TotalBits;
@@ -93,12 +93,6 @@ namespace ZENBitPackToolbox.Models
             if (IsSigned) // Check if the value can be negative and handle it accordingly
             {
                 spvar_current_value = Unpack(spvar_current_value, spvar_bits); // Restore the signed, possibly negative value
-            }
-
-            if (showRealValue == false && (spvar_current_value < Min || spvar_current_value > Max))
-            {
-                CurrentValue = Min;
-                return;
             }
             CurrentValue = spvar_current_value;
         }
