@@ -16,8 +16,26 @@
     {
         <tr>
             <td>@spvar.Name</td>
-            <td>@spvar.ExpectedValue</td>
-            <td>@spvar.CurrentValue</td>
+            <td>
+                @if (spvar.ExpectedValue != spvar.CurrentValue)
+                {
+                    <MudText Color="Color.Error">@spvar.ExpectedValue</MudText>
+                }
+                else
+                {
+                    <MudText>@spvar.ExpectedValue</MudText>
+                }
+            </td>
+            <td>
+                @if (spvar.ExpectedValue != spvar.CurrentValue)
+                {
+                    <MudText Color="Color.Error">@spvar.CurrentValue</MudText>
+                }
+                else
+                {
+                    <MudText>@spvar.CurrentValue</MudText>
+                }
+            </td>
             <td>
                 <MudIconButton Color="Color.Warning" Variant="Variant.Filled" Icon="@Icons.Filled.Edit" Size="Size.Small" OnClick="() => OpenEditDialogAsync(spvar)" />
             </td>

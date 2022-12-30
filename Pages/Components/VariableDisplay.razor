@@ -24,7 +24,16 @@
             <td>@variable.Min</td>
             <td>@variable.Max</td>
             <td>@variable.ExpectedValue</td>
-            <td>@variable.CurrentValue</td>
+            <td>
+                @if (variable.Min > variable.CurrentValue || variable.Max < variable.CurrentValue)
+                {
+                    <MudText Color="Color.Error">@variable.CurrentValue</MudText>
+                }
+                else
+                {
+                    <MudText>@variable.CurrentValue</MudText>
+                }
+            </td>
             <td>@variable.TotalBits</td>
             <td>
                 @if (variable.StartSpvar != variable.EndSpvar)
