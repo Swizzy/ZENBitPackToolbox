@@ -25,8 +25,8 @@
                          Immediate="true"
                          Clearable="false" />
         <MudNumericField T="int"
-                         @bind-Value="@CurrentValue"
-                         Label="Current value"
+                         @bind-Value="@ExpectedValue"
+                         Label="Expected value"
                          Min="Int32.MinValue"
                          Max="Int32.MaxValue"
                          Step="1"
@@ -53,13 +53,13 @@
     [Parameter]
     public int Max { get; set; }
     [Parameter]
-    public int CurrentValue { get; set; }
+    public int ExpectedValue { get; set; }
     [Parameter]
     public int Index { get; set; }
 
     async Task Submit()
     {
-        await StateManager().UpdateVariableAsync(Index, Name, Min, Max, CurrentValue);
+        await StateManager().UpdateVariableAsync(Index, Name, Min, Max, ExpectedValue);
         MudDialog.Close(DialogResult.Ok(true));
     }
 

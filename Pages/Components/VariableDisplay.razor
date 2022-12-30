@@ -52,6 +52,7 @@
                     <MudIconButton Color="Color.Success" Variant="Variant.Filled" Icon="@Icons.Filled.ArrowUpward" OnClick="() => MoveAsync(variable, true)" Disabled="variable.Index == 0" Title="Move variable up" />
                     <MudIconButton Color="Color.Success" Variant="Variant.Filled" Icon="@Icons.Filled.ArrowDownward" OnClick="() => MoveAsync(variable, false)" Disabled="variable.Index == _indexMax" Title="Move variable down" />
                     <MudIconButton Color="Color.Info" Variant="Variant.Filled" Icon="@Icons.Filled.Refresh" OnClick="() => ReloadCurrentValueAsync(variable)" Title="Reload from current value" />
+                    <MudIconButton Color="Color.Success" Variant="Variant.Filled" Icon="@Icons.Filled.Bookmarks" OnClick="() => OpenAddDialogAsync(variable)" Title="Duplicate variable"></MudIconButton>
                     <MudIconButton Color="Color.Warning" Variant="Variant.Filled" Icon="@Icons.Filled.Edit" OnClick="() => OpenEditDialogAsync(variable)" Title="Modify the variable" />
                     <MudIconButton Color="Color.Error" Variant="Variant.Filled" Icon="@Icons.Filled.Remove" OnClick="() => RemoveAsync(variable)" Title="Remove the variable" />
                 </MudButtonGroup>
@@ -126,8 +127,7 @@
                                                   { "Min", data.Min },
                                                   { "Max", data.Max },
                                                   { "CurrentValue", data.CurrentValue },
-                                                  { "Index", data.Index },
-
+                                                  { "Index", data.Index }
                                               };
 
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium };
@@ -163,6 +163,21 @@
     private async Task ReloadCurrentValueAsync(VariableData variable)
     {
         await StateManager.ReloadVariableCurrentValueAsync(variable.Index);
+    }
+
+    private async Task OpenAddDialogAsync(VariableData variable)
+    {
+        var parameters = new DialogParameters {
+                                                  { "StateManager", () => StateManager },
+                                                  { "Name", variable.Name },
+                                                  { "Min", variable.Min },
+                                                  { "Max", variable.Max },
+                                                  { "ExpectedValue", variable.ExpectedValue }
+                                              };
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium };
+
+        await(await DialogService.ShowAsync<AddVariableDialog>("Add Variable", parameters, options)).Result;
     }
 
 }
